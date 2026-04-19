@@ -1,0 +1,243 @@
+:root {
+    /* === PALETTE DE COULEURS === */
+    --theme-primary: #ffa000;
+    --theme-primary-dark: #c67100;
+    --theme-bg: #1a1a2e;
+    --theme-surface: #aaa;
+    --theme-surface-light: #ddd;
+    --theme-surface-dark: #444;
+    --theme-text: #0001;
+    --theme-text-muted: #222;
+
+    /* === COULEURS SÉMANTIQUES === */
+    --theme-success: #4caf50;
+    --theme-warning: #ff9800;
+    --theme-error: #f44336;
+    --theme-info: #2196f3;
+
+    /* === DIMENSIONS === */
+    --theme-dock-height: 48px;
+    --theme-window-radius: 8px;
+    --theme-window-border-width: 1px;
+    --theme-btn-radius: 6px;
+    --theme-btn-size: 36px;
+    --theme-launcher-size: 40px;
+    --theme-launcher-radius: 8px;
+    --theme-badge-size: 14px;
+    --theme-dot-size: 5px;
+    --theme-resize-handle-size: 18px;
+--theme-tool-bar-height: 48px;
+    /* === ESPACEMENTS === */
+    --theme-dock-padding: 0 1rem;
+    --theme-dock-gap: 0.5rem;
+    --theme-window-padding: 0.5rem;
+    --theme-header-padding: 0.5rem 0.75rem;
+    --theme-settings-gap: 0.75rem;
+
+    /* === TYPOGRAPHIE === */
+    --theme-font-family: system-ui, sans-serif;
+    --theme-font-mono: monospace;
+    --theme-font-size-xs: 0.65rem;
+    --theme-font-size-sm: 0.7rem;
+    --theme-font-size-md: 0.85rem;
+    --theme-font-size-lg: 0.9rem;
+
+    /* === OPAQUITÉS === */
+    --theme-hud-bg-opacity: 0.6;
+    --theme-overlay-bg-opacity: 0.65;
+    --theme-visualizer-bg-opacity: 0.3;
+    --theme-resize-handle-opacity: 0.5;
+
+    /* === OMBRES === */
+    --theme-window-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    --theme-window-shadow-focused: 0 4px 32px rgba(255, 160, 0, 0.25);
+    --theme-dropdown-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --theme-tnt-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+
+    /* === TRANSITIONS === */
+    --theme-transition-fast: 0.1s;
+    --theme-transition-normal: 0.15s;
+    --theme-transition-slow: 0.3s;
+
+    /* === COULEURS TNT === */
+    --theme-tnt-contact: #f00;
+    --theme-tnt-cursor: #0f0;
+    --theme-tnt-rod: #888;
+    --theme-tnt-pinch: #ffa000;
+    --theme-tnt-impact: rgba(255, 255, 255, 0.92);
+
+    /* === COULEURS BATTERIE === */
+    --theme-battery-good: #4caf50;
+    --theme-battery-mid: #ffa000;
+    --theme-battery-low: #ff9800;
+    --theme-battery-critical: #f44336;
+    --theme-battery-track-bg: rgba(255, 255, 255, 0.08);
+
+    /* === HEADER FENÊTRE === */
+    --theme-header-bg: var(--theme-surface-light);
+    --theme-header-title-color: var(--theme-text);
+
+    /* === ALIAS (rétro-compatibilité) === */
+    --color-primary: var(--theme-primary);
+    --color-primary-dark: var(--theme-primary-dark);
+    --color-bg: var(--theme-bg);
+    --color-surface: var(--theme-surface);
+    --color-surface-light: var(--theme-surface-light);
+    --color-text: var(--theme-text);
+    --color-text-muted: var(--theme-text-muted);
+    --dock-height: var(--theme-dock-height);
+    --layer-content-z: 1;
+    --layer-ux-z: 100;
+    --layer-subwindows-z: 20;
+    --layer-dock-z: 30;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f5f5f5;
+}
+
+main {
+    text-align: center;
+    padding: 2rem;
+}
+
+h1 {
+    color: #4caf50;
+    margin-bottom: 1rem;
+}
+
+#app-ground {
+  
+  position: fixed ;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  background: #444;
+}
+#tnt-layer {
+  
+  position: fixed ;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  touch-action: none;
+}
+#vme-ux-layer {
+  
+  position: fixed ;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  touch-action: none;
+  pointer-events: none;
+  display: flex;
+}
+div.down-flow,
+div.up-flow {
+  flex-direction: column;
+}
+div.right-flow,
+div.left-flow  {
+  flex-direction: row;
+}
+
+div.down-flow > div,
+div.up-flow > div {
+
+  width: 100%;
+}
+div.right-flow > div,
+div.left-flow > div {
+  height: 100%;
+}
+
+
+.surface {
+  
+  max-height: 100%;
+  max-width: 100%;
+  background: var(--theme-surface-light);
+}
+.full-flow > div.surface {
+  mizn-height: 100%;
+  miin-width: 100%;
+  background: var(--theme-primary-dark);
+  flex-grow: 1;
+}
+.surface-state-bar {
+  background: #0003;
+  position: absolute;
+  bottom: 0;
+  left: : 0;
+  width: 100%;
+  padding: .15em;
+}
+
+.surface.free-flow {
+  
+  min-height: 2em;
+  min-width: 2em;
+  background: var(--theme-surface-dark);
+}
+.surface.full-flow {
+  
+  min-height: 100%;
+  min-width: 100%;
+  background: var(--theme-surface-light);
+}
+.tool-bar {
+  position: relative;
+  
+  background: var(--theme-surface);
+  border: 2px solid #1110;
+}
+.tool-bar.active {
+  border: 2px solid #111;
+}
+
+
+.full-flow > div.tool-bar {
+  display: flex;
+}
+div.down-flow > div.tool-bar,
+div.up-flow > div.tool-bar {
+  flex-direction: row;
+  width: 100%;
+}
+div.right-flow > div.tool-bar,
+div.left-flow > div.tool-bar {
+  flex-direction: column;
+  height: 100%;
+}
+
+
+.button {
+  
+  height: var(--theme-btn-size);
+  width: var(--theme-btn-size);
+  background: var(--theme-surface-light);
+  border: 2px solid #1110;
+}
+.button.active {
+  border: 2px solid #111;
+}

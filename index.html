@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>
+    // Parse les paramètres GET → window.VOS_<key> (scope global temporaire)
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      params.forEach(function(val, key) {
+        window['VOS_' + key] = (val === '' || val === '1' || val === 'true') ? true : val;
+      });
+    })();
+    window.VOS_debug = true;
+    if (window.VOS_debug) {
+      eruda.init();
+      eruda.show();
+    }
+    window.l = function (s, dataStr = '') {
+      var ts = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
+      var timeStyle = 'border-right: 4px solid red;border-radius:.5em 0 0 .5em;;color:#444;background:#ddd;font-weight:bold;padding:2px 6px;margin-right:0px;';
+      var evtStyle = 'color:#000;background:#faa000;padding:2px 6px;border-radius:.5em 0 0 .5em;font-weight:bold;font-family:monospace;';
+      var nameStyle = 'color:#fff;background:#000;padding:2px 6px;border-radius:0 .5em .5em 0;font-weight:bold;font-family:monospace;';
+      var dataStyle = 'color:#000;background:#fff;padding:2px 6px;border-radius:4px;font-weight:bold;font-family:monospace;';
+      
+      console.log('%c' + ts + ' %c' + s + ' %c' + (dataStr ? dataStr : ''), timeStyle, nameStyle, dataStyle);
+  
+    }
+    window.cl = function (s, result) {
+      console.log (s);
+      console.log (result);
+      console.log (result.parentComponent);
+      return;
+      var ts = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
+      var timeStyle = 'border-radius:.5em 0 0 .5em;;color:#444;background:#ddd;font-weight:bold;padding:2px 6px;margin-right:0px;';
+      var evtStyle = 'color:#000;background:#faa000;padding:2px 6px;border-radius:.5em 0 0 .5em;font-weight:bold;font-family:monospace;';
+      var nameStyle = 'color:#fff;background:#000;padding:2px 6px;border-radius:0 .5em .5em 0;font-weight:bold;font-family:monospace;';
+      var okStyle = 'border-left: 10px solid green;color:#fff;background:#000;padding:2px 6px;border-radius:0 .5em .5em 0;font-weight:bold;font-family:monospace;';
+      var noStyle = 'border-left: 10px solid red;color:#fff;background:#000;padding:2px 6px;border-radius:0 .5em .5em 0;font-weight:bold;font-family:monospace;';
+      var dataStyle = 'color:#000;background:#fff;padding:2px 6px;border-radius:4px;font-weight:bold;font-family:monospace;';
+      
+      console.log('%c' +' [x] '+ '\n [y]%c' + s + ' %c' , timeStyle, (result ? okStyle : noJStyle), dataStyle);
+  
+    }
+     
+    
+    
+    </script>
+    <title>vme</title>
+    <link rel="manifest" href="manifest.json?r3">
+    <link rel="stylesheet" href="css/style.css?v=02">
+</head>
+<body>
+    <script src="js/utils.js"></script>
+    <script src="js/tnt.js"></script>
+    <script src="js/ux.js"></script>
+    <script src="js/vme.js"></script>
+</body>
+</html>
