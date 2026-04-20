@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")"
 
 if [ -n "$1" ]; then
-    VERSION="$1"
+    VERSION="${1#r}"  # strip leading 'r' if present
 else
     CURRENT=$(grep -oP '"vme r\K[0-9]+' manifest.json | head -1)
     VERSION=$((CURRENT + 1))
