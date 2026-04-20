@@ -179,10 +179,28 @@ div.left-flow > div {
   background: var(--theme-surface-light);
 }
 .full-flow > div.surface {
-  mizn-height: 100%;
-  miin-width: 100%;
+  
+  position: relative;
   background: var(--theme-primary-dark);
   flex-grow: 1;
+}
+.free-flow > div.surface {
+  
+  position: absolute;
+  min-height: 10em;
+  min-width: 10em;
+  max-height: 10em;
+  max-width: 10em;
+  background: var(--theme-primary);
+  flex-grow: 1;
+}
+.surface-top-bar {
+  background: #0003;
+  position: absolute;
+  top: 0;
+  left: : 0;
+  width: 100%;
+  padding: .15em;
 }
 .surface-state-bar {
   background: #0003;
@@ -210,8 +228,9 @@ div.left-flow > div {
   
   background: var(--theme-surface);
   border: 2px solid #1110;
+  gap: 2px;
 }
-.tool-bar.active {
+.tool-bar.focused {
   border: 2px solid #111;
 }
 
@@ -238,6 +257,6 @@ div.left-flow > div.tool-bar {
   background: var(--theme-surface-light);
   border: 2px solid #1110;
 }
-.button.active {
+.button.focused {
   border: 2px solid #111;
 }

@@ -15,6 +15,40 @@ class Vme {
   }
 }
 */
+
+class EventBus {
+  constructor() {
+    this.listeners = new Map();
+  }
+
+  on(type, handler) {
+    if (!this.listeners.has(type))
+      this.listeners.set(type, new Set());
+    this.listeners.get(type).add(handler);
+  }
+
+  off(type, handler) {
+    this.listeners.get(type)?.delete(handler);
+  }
+
+  emit(type, payload, source) {
+    const event = {
+      type,
+      payload,
+      source,
+      stopped: false,
+      stop() { this.stopped = true; }
+    };
+  
+    const list = this.listeners.get(type);
+    if (!list) return;
+  
+    for (const fn of list) {
+      fn(event);
+      if (event.stopped) break;
+    }
+  }
+}
 class States {
   #states;
   #owner;
@@ -66,6 +100,7 @@ class UxComponent {
     this.stateBar = mkdiv(' '+this.states.all().join(' | '), 'surface-state-bar');
     this.components = [];
     this.domElement = mkdiv('', '', this.uid);
+    this.bus = parent ? parent.bus : new EventBus();
     this.#parentComponent = parent;
   
     if (parent) parent.addComponent(this); // 🔥 auto-link
@@ -97,7 +132,16 @@ class UxComponent {
     return width / height;
   }
   updateStateBar () {}
+  onTap () {}
   onStatesChange () {this.updateStateBar ()}
+  emit(type, payload) {
+    this.bus.emit(type, payload, this);
+  }
+
+  on(type, handler) {
+    this.bus.on(type, handler);
+  }
+
 }
 class ToolBar extends UxComponent {
   
@@ -108,27 +152,33 @@ class ToolBar extends UxComponent {
   }
   onStatesChange () {
     
-    if (this.states.has('focused')) this.domElement.classList.add ('active');
-    else this.domElement.classList.remove ('active');
+    if (this.states.has('focused')) this.domElement.classList.add ('focused');
+    else this.domElement.classList.remove ('focused');
     
   }
 
 }
 class Button extends UxComponent {
   
-  constructor (parentComponent) {
+  constructor (parentComponent, params) {
     
     super (parentComponent);
     this.domElement.classList.add('button');
-    this.domElement.innerText = '⬛';
+    //this.domElement.innerText = '⬛';
+    this.domElement.innerText = '';
     
   }
   onStatesChange () {
     
-    if (this.states.has('focused')) this.domElement.classList.add ('active');
-    else this.domElement.classList.remove ('active');
+    if (this.states.has('focused')) this.domElement.classList.add ('focused');
+    else this.domElement.classList.remove ('focused');
     
   }
+  onTap() {
+    if (this.action)
+      this.action ();
+  }
+
 }
 class Surface extends UxComponent {
   
@@ -139,7 +189,7 @@ class Surface extends UxComponent {
     this.showStates = true;
     
     const parentType = parentComponent?.typeName ?? 'none';
-    console.log('Surface parent:', parentType); // ex: "Ux"
+   // console.log('Surface parent:', parentType); // ex: "Ux"
 
     // Comportement conditionnel selon le parent
     if (parentType === 'Ux') {
@@ -159,6 +209,8 @@ class Surface extends UxComponent {
     }
     
     this.domElement.append(this.stateBar);
+    this.topBar = mkdiv(' '+this.uid, 'surface-top-bar');
+    this.domElement.append(this.topBar);
   }
   
   onStatesChange () {
@@ -168,6 +220,7 @@ class Surface extends UxComponent {
     this.updateStateBar ();
   }
 }
+
 
 class LogicTheme {
   #ux;
@@ -188,12 +241,24 @@ class Lutin extends LogicTheme {
     ibl('Lutin');
     super (ux);
     this.bringBasicComponents ();
-    
+    this.surfacesRegister = [];
+    this.ux.on('intent:mktestwin', () => {
+      this.mktestwin();
+    });
+
+  }
+  mktestwin () {
+    this.surfacesRegister.push(new Surface(this.workspace, {states:['freewindow']}));
+    l(this.surfacesRegister);
   }
   bringBasicComponents () {
     l('bringBasicComponents');
-    this.corePanel = new ToolBar(this.ux); // auto addcl to parent
+    this.corePanel = new ToolBar(this.ux); // auto add to parent
     this.startBtn = new Button(this.corePanel);
+    this.startBtn.action = () => {
+      console.log(this);
+      this.emit('intent:mktestwin')
+    }
     this.tmpBtn = new Button(this.corePanel);
     this.workspace = new Surface(this.ux, {states:['free-flow']});
   }
@@ -228,7 +293,9 @@ class Lutin extends LogicTheme {
           
           this.ux.states.recursiveDrop('focused');
           target.states.add('focused');
-          l('focus on');
+          target.onTap(data);
+          
+          l('focus on '+target.constructor.name+' - '+target.uid);
     
           break;
           
@@ -250,7 +317,15 @@ class Lutin extends LogicTheme {
       l('??? nothing');
     }
   }
+  emit(type, payload) {
+    this.ux.emit(type, payload);
+  }
+    
+  on(type, handler) {
+    this.ux.on(type, handler);
+  }
 }
+
 class Ux extends UxComponent {
   constructor (domDest) {
     super();
