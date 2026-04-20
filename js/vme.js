@@ -1,6 +1,6 @@
 //import { TouchOverlay } from './tnt.js';
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js?v=4")
+    navigator.serviceWorker.register("service-worker.js?v=r7")
         .then(reg => console.log("SW registered"))
         .catch(err => console.error("SW registration failed:", err));
 }
